@@ -12,6 +12,11 @@ class Cart extends CI_Controller
 	{
 		parent::__construct();
 
+		$params = array('server_key' => 'SB-Mid-server-z5T9WhivZDuXrJxC7w-civ_k', 'production' => false);
+		$this->load->library('veritrans');
+		$this->veritrans->config($params);
+		$this->load->helper('url');
+
 		$this->load->model('Bank_model');
 		$this->load->model('Cart_model');
 		$this->load->model('Company_model');
@@ -222,7 +227,11 @@ class Cart extends CI_Controller
 		$query = $this->db->get('transaksi')->row();
 
 		$gtotal = $query->total - $diskon;
-
+		$statustype = $this->input->post('result_type');
+		$statusdata = $this->input->post('result_data');
+		$json = json_decode($statusdata, true);
+		// var_dump($json);
+		// die;
 		$this->db->where('id_trans', $this->input->post('id_trans'));
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('transaksi', array(
@@ -231,7 +240,9 @@ class Cart extends CI_Controller
 			'grand_total'	=>	$gtotal,
 			'deadline'		=>	date('Y-m-d H:i:s', strtotime('1 hour')),
 			'catatan'     => $this->input->post('catatan'),
-			'status'			=>	'1',
+			'order_id'			=>	$json['order_id'],
+			'pdf_url'			=>	$json['pdf_url'],
+			'status'			=>	'2',
 		));
 
 		redirect(site_url('cart/finished'));
@@ -245,7 +256,27 @@ class Cart extends CI_Controller
 		$this->data['cart_finished']	    			= $this->Cart_model->get_cart_per_customer_finished($this->data['cart_latest']->id_trans)->result();
 		$this->data['cart_finished_row']   			= $this->Cart_model->get_cart_per_customer_finished($this->data['cart_latest']->id_trans)->row();
 		$this->data['data_bank'] 								= $this->Bank_model->get_all();
-
+		// var_dump($this->veritrans->status($this->data['cart_finished_row']->order_id));
+		// die;
+		$cektransaksi = $this->veritrans->status($this->data['cart_finished_row']->order_id);
+		if ($cektransaksi->status_code == 200) {
+			$this->db->where('order_id', $this->data['cart_finished_row']->order_id);
+			$this->db->update('transaksi', array(
+				'status'		=>	1,
+			));
+		} elseif ($cektransaksi->status_code == 201) {
+			$this->db->where('order_id', $this->data['cart_finished_row']->order_id);
+			$this->db->update('transaksi', array(
+				'status'		=>	2,
+			));
+		} else {
+			$this->db->where('order_id', $this->data['cart_finished_row']->order_id);
+			$this->db->update('transaksi', array(
+				'status'		=>	3,
+			));
+		}
+		
+		
 		$this->load->view('front/cart/finished', $this->data);
 	}
 

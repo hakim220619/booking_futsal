@@ -49,7 +49,7 @@ class Snap extends CI_Controller
             'id' => rand(000, 999),
             'price' => $this->input->get('grandtotal'),
             'quantity' => 1,
-            'name' => $this->input->get('nama_lapangan'),
+            'name' => $this->session->userdata('name'),
         );
 
         // Optional

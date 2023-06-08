@@ -102,7 +102,7 @@ class Cart_model extends CI_Model
     lapangan.id_lapangan, lapangan.nama_lapangan,
     transaksi.id_trans, transaksi.id_invoice, transaksi.user_id, transaksi.subtotal, transaksi.diskon, transaksi.grand_total, transaksi.deadline, transaksi.status, transaksi.catatan,
     transaksi_detail.trans_id, transaksi_detail.lapangan_id, transaksi_detail.tanggal, transaksi_detail.jam_mulai, transaksi_detail.durasi, transaksi_detail.jam_selesai, transaksi_detail.harga_jual, transaksi_detail.total,
-    users.id
+    users.id, order_id, pdf_url
     ');
     $this->db->join('lapangan', 'transaksi_detail.lapangan_id = lapangan.id_lapangan');
     $this->db->join('transaksi', 'transaksi_detail.trans_id = transaksi.id_trans');
