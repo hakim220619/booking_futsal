@@ -87,10 +87,10 @@ class Snap extends CI_Controller
 
         // Optional
         $customer_details = array(
-            'first_name'    => "Andri",
-            'last_name'     => "Litani",
-            'email'         => "andri@litani.com",
-            'phone'         => "081122334455",
+            'first_name'    => $this->session->userdata('name'),
+            'last_name'     => "_",
+            'email'         => $this->session->userdata('name') . "@gmail.com",
+            'phone'         => "000000000000",
             'billing_address'  => $billing_address,
             'shipping_address' => $shipping_address
         );
