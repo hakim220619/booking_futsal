@@ -44,9 +44,9 @@
       									<td style="text-align:center">
                           <?php if($data->status == '0'){ ?>
       		                  <button type="button" name="status" class="btn btn-primary"><i class="fa fa-ban"></i> BELUM CHECKOUT</button>
-      		                <?php } elseif($data->status == '1'){ ?>
-      		                  <button type="button" name="status" class="btn btn-warning"><i class="fa fa-minus-circle"></i> BELUM LUNAS</button>
       		                <?php } elseif($data->status == '2'){ ?>
+      		                  <button type="button" name="status" class="btn btn-warning"><i class="fa fa-minus-circle"></i> BELUM LUNAS</button>
+      		                <?php } elseif($data->status == '1'){ ?>
       		                  <button type="button" name="status" class="btn btn-success"><i class="fa fa-check"></i> LUNAS</button>
       		                <?php } elseif($data->status == '3'){ ?>
       		                  <button type="button" name="status" class="btn btn-danger"><i class="fa fa-remove"></i> EXPIRED</button>
