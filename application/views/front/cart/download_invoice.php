@@ -14,9 +14,9 @@
   <hr/>
   <div align="center">
     <b>INVOICE NO. <?php echo $cart_finished_row->id_invoice ?>
-      <?php if($cart_finished_row->status == '1'){ ?>
+      <?php if($cart_finished_row->status == '2'){ ?>
         <p style='color:red'>(BELUM LUNAS)</p>
-      <?php }elseif($cart_finished_row->status == '2'){ ?>
+      <?php }elseif($cart_finished_row->status == '1'){ ?>
         <p style='color:green'>(LUNAS)</p>
       <?php } ?>
     </b>
